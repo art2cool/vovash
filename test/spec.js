@@ -25,9 +25,41 @@ describe('Vovash test', () => {
         it('should have method chunk', () => {
             expect( _.chunk ).to.exist;
             expect( _.chunk ).to.be.a('function');
-        })
+        });
+         it('should have method difference', () => {
+            expect( _.difference ).to.exist;
+            expect( _.difference ).to.be.a('function');
+        });
+         it.skip('should have method _isSimpleType', () => {
+            expect( _._isSimpleType ).to.exist;
+            expect( _._isSimpleType ).to.be.a('function');
+        });
 
     });
+    describe.skip('_isSimpleType method', () => {
+       let spy;
+        beforeEach( () => {
+            spy = chai.spy( _._isSimpleType );
+        });
+        it('should be called', () => {
+            spy();
+            spy.should.have.been.called();
+        });
+
+        it('should return true for numbers, string or boolean', () => {
+            expect( spy(1) ).to.be.true;
+            expect( spy('string') ).to.be.true;
+            expect( spy(false) ).to.be.true;            
+            expect( spy(true) ).to.be.true;             
+        });
+        it('should return false if argument object, array, null, undefined or NaN', () => {
+            expect( spy() ).to.be.false;
+            expect( spy([]) ).to.be.false;
+            expect( spy(NaN) ).to.be.false;            
+            expect( spy(null) ).to.be.false;
+            expect( spy({}) ).to.be.false;         
+        });
+    })
 
     describe('concat method', () => {
         let spy;
@@ -179,6 +211,49 @@ describe('Vovash test', () => {
             expect( spy([1,2,3], 4) ).to.deep.equal([[1,2,3]]);
             expect( spy(['1','2','3'], 2) ).to.deep.equal([['1','2'],['3']]);            
         });
-
+    });
+    describe('difference method', () => {
+        let spy;
+        beforeEach( () => {
+            spy = chai.spy( _.difference );
+        });
+        it('should be called', () => {
+            spy();
+            spy.should.have.been.called();
+        });
+        it('should return an Error if first argument not array', () => {
+            expect( spy() ).to.be.an('error');
+            expect( spy({}) ).to.be.an('error');
+            expect( spy(2) ).to.be.an('error');
+            expect( spy(true) ).to.be.an('error');
+            expect( spy('string') ).to.be.an('error');
+            expect( spy(null) ).to.be.an('error');
+            expect( spy([],1) ).to.be.not.an('error')
+        });
+        it('shuuld return array', () => {
+            expect( spy([1,2]) ).to.be.an('array');
+        });
+        it('should return difference beetween array and numbers', () => {
+            expect( spy([1,2,3], 1)).to.deep.equal([2,3]);
+            expect( spy([1,2,3], 1, 3)).to.deep.equal([2]);
+        });
+        it('should return difference beetween array and array with numbers', () => {
+            expect( spy([1,2,3], [1]) ).to.deep.equal([2,3]);
+            expect( spy([1,2,3], [1,3]) ).to.deep.equal([2]);
+            expect( spy([1,2,3], [1], [2]) ).to.deep.equal([3]);
+            expect( spy([1,2,3], [5]) ).to.deep.equal([1,2,3]);                         
+        });
+        it('should return difference beetween array and array with boolean', () => {
+            expect( spy([0,2,true,false], [0]) ).to.deep.equal([2, true,false]);
+            expect( spy([true,false,false], [false,true]) ).to.deep.equal([]);
+            expect( spy([true,false,3], true, false) ).to.deep.equal([3]);
+            expect( spy([false, false, true], []) ).to.deep.equal([false,false,true]);                         
+        });
+        it('should return difference beetween array and array with different types', () => {
+            expect( spy([1,'string',null,{},false, 0], [null]) ).to.deep.equal([1,'string',{}, false,0]);
+    // TODO expect( spy([1,'string',NaN, 0], NaN) ).to.deep.equal([1,'string',0]);
+    //TODO  expect( spy([1,'string',undefined, 0], undefined) ).to.deep.equal([1,'string',0]);
+            expect( spy([1,'string',undefined, 0], [undefined]) ).to.deep.equal([1,'string',0]);
+        });
     });
 });

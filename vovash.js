@@ -1,5 +1,27 @@
 class vovash {
     
+    difference(array, ...arg) {
+        let newArray = array;
+         if(!array || !(typeof(array)  === 'object' && array instanceof Array)) {
+            return new Error('First argument should be an array')
+        } else {
+            arg.forEach( arg => {
+                if (typeof(arg) === 'string' || typeof(arg) === 'number' || typeof(arg) === 'boolean') {
+                    newArray = newArray.filter( arr => {
+                        return arr !== arg; 
+                    })
+                } else if(typeof(arg)  === 'object' && arg instanceof Array) {
+                    newArray = newArray.filter( arr => {
+                        return !(arg.indexOf(arr) + 1);
+                    })
+                }
+
+            })
+            
+            return newArray;
+        }
+    }
+
     chunk(array, size) {
         let newArray = [];
         if(!array || !(typeof(array)  === 'object' && array instanceof Array)) {
