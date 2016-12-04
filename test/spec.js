@@ -295,4 +295,35 @@ describe('Vovash test', () => {
             expect( _.dropRight([undefined,1,undefined,undefined], 2) ).to.deep.equal([undefined,1]);
         });
     });
+    describe('fill method', () => {
+        it('should be a function', () => {
+            expect( _.fill ).to.exist;
+            expect( _.fill ).to.be.a('function');
+        });
+        it('should return an Error if first argument not array', () => {
+            expect( () => _.fill() ).to.throw(Error);
+            expect( () => _.fill({}) ).to.throw(Error);
+            expect( () => _.fill(2) ).to.throw(Error);
+            expect( () => _.fill(true) ).to.throw(Error);
+            expect( () => _.fill('string') ).to.throw(Error);
+            expect( () => _.fill(null) ).to.throw(Error);
+            expect( () => _.fill([]) ).to.not.throw(Error);
+        });
+        it('should return the same array if second argument undefined', () => {
+            expect( _.fill([1,2]) ).to.deep.equal([1,2]);
+            expect( _.fill([1,2], undefined) ).to.deep.equal([1,2]);            
+            expect( _.fill([1,2], 1) ).to.not.deep.equal([1,2]);
+        });
+        it('should return array each element of what equal to second argument', () => {
+            expect( _.fill([1,2,3],1) ).to.deep.equal([1,1,1]);
+            expect( _.fill(['a','b','c'], 'z') ).to.deep.equal(['z','z','z']);
+            expect( _.fill([false,true,false],true) ).to.deep.equal([true,true,true]);
+            expect( _.fill([null,undefined,NaN],NaN) ).to.deep.equal([NaN,NaN,NaN]);
+            expect( _.fill([null,undefined,null],null) ).to.deep.equal([null,null,null]);
+            expect( _.fill(Array(5), 'a') ).to.deep.equal(['a','a','a','a','a'])
+        });
+        it('should return array with updated range of elements', () => {
+            expect( _.fill([1,1,1,1], 2,1,2) ).to.deep.equal([1,2,2,1]);
+        });
+    })
 });

@@ -1,5 +1,23 @@
 class vovash {
     
+    fill(array, data, start, end) {
+
+        if(!array || !(typeof(array)  === 'object' && array instanceof Array)) {
+            throw new Error('First argument should be an array');
+        } else {
+            let i = start || 0;
+            let len = end || array.length - 1;
+            if(data !== undefined) {
+                for(i; i<=len; i++ ){
+                    array[i] = data;
+                }
+                return array;
+            } else {
+                return array;
+            }
+        }  
+    }
+
     dropRight(array, count) {
         let reversedArray = array.reverse();
         return this.drop(array,count).reverse();
@@ -117,6 +135,5 @@ class vovash {
         return concatinatedArray;    
     }
 }
-
 
 module.exports = new vovash();

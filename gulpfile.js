@@ -19,6 +19,9 @@ gulp.task('mocha', () => {
 });
 gulp.task('mocha', () => {
     return gulp.src(['./test/*.js'], {read: false})
+
+//       .pipe(mocha({reporter: 'progress'}))
+//       .pipe(mocha({reporter: 'nyan'}))
         .pipe(mocha({reporter: 'spec'}))
         .on('error', gutil.log);
 });
